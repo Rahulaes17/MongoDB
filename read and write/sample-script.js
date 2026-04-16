@@ -61,3 +61,36 @@ db.students.insertMany([
  grades: [70, 75, 72]
 }
 ])
+
+db.students.insertOne({
+ name: 'Priya',
+ age: 19,
+ course: 'MongoDB',
+ enrolled: true,
+ teacherId: ObjectId("507f1f77bcf86cd799439011"),
+ grades: [88, 91, 89]
+})
+
+
+db.students.insertMany([
+{
+ name: 'Kabir',
+ age: 20,
+ course: 'Node.js',
+ enrolled: true,
+ teacherId: ObjectId("507f1f77bcf86cd799439012"),
+ grades: [84, 87, 86]
+},
+{
+ name: 'Zara',
+ age: 22,
+ course: 'Express',
+ enrolled: true,
+ teacherId: ObjectId("507f1f77bcf86cd799439013"),
+ grades: [90, 92, 94]
+}
+])
+
+db.students.findOne({ name: 'Ali' })
+
+db.students.find({ course: 'MongoDB' })
