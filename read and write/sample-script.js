@@ -94,3 +94,47 @@ db.students.insertMany([
 db.students.findOne({ name: 'Ali' })
 
 db.students.find({ course: 'MongoDB' })
+
+
+
+//update
+
+db.students.updateOne(
+{ name: 'Ali' },
+{ $set: { course: 'Advanced MongoDB' } }
+)
+
+// Add 1 year to age of all enrolled students
+db.students.updateMany(
+    { enrolled: true },
+{ $inc: { age: 1 } }
+)
+
+
+// Add a new grade to Sara's grades array
+db.students.updateOne(
+{ name: 'Sara' },
+{ $push: { grades: 96 } }
+)
+// Remove enrolled field from Ravi
+db.students.updateOne(
+{ name: 'Ravi' },
+{ $unset: { enrolled: "" } }
+)
+// Increment teacher's experience by 1
+db.teachers.updateOne(
+{ name: 'Dr. Kumar' },
+{ $inc: { experience: 1 } }
+)
+
+// Delete a specific student
+db.students.deleteOne({ name: 'Kabir' })
+
+// Delete all students who are not enrolled
+db.students.deleteMany({ enrolled: false })
+// Delete all students with low average grades
+db.students.deleteMany({
+ $expr: {
+ $lt: [{ $avg: "$grades" }, 75]
+}
+})
