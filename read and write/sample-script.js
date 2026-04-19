@@ -138,3 +138,23 @@ db.students.deleteMany({
  $lt: [{ $avg: "$grades" }, 75]
 }
 })
+
+
+// Find a student by _id
+db.students.findOne({
+ _id: ObjectId("64bd2e183dd4e6402f10388f")
+})
+// Update a teacher by _id
+db.teachers.updateOne(
+{ _id: ObjectId("507f1f77bcf86cd799439011") },
+{ $set: { office: "Room 301" } }
+)
+
+// Move all Express students to a different teacher
+db.students.updateMany(
+{ course: 'Express' },
+{ $set: {
+ teacherId: ObjectId("507f1f77bcf86cd799439012"),
+ course: 'Advanced Express'
+}}
+)
