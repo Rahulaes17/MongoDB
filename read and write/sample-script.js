@@ -158,3 +158,14 @@ db.students.updateMany(
  course: 'Advanced Express'
 }}
 )
+
+
+db.students.find({ age: { $gt: 21 } })
+
+db.students.find({ age: { $gte: 18, $lte: 25 } })
+
+db.teachers.find({ experience: { $gt: 5 } })
+
+db.students.find({ enrolled: { $ne: true } })
+
+db.students.find({ course: { $in: ['MongoDB', 'Node.js'] } })
