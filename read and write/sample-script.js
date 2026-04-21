@@ -169,3 +169,19 @@ db.teachers.find({ experience: { $gt: 5 } })
 db.students.find({ enrolled: { $ne: true } })
 
 db.students.find({ course: { $in: ['MongoDB', 'Node.js'] } })
+
+db.students.find({
+  $or: [
+{ course: 'Python' },
+{ age: { $lt: 20 } }
+]
+})
+
+db.students.find({
+  age: { $gt: 20 },
+  enrolled: true
+})
+
+db.students.find({
+  course: { $not: { $eq: 'Node.js' } }
+})
