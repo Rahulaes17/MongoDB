@@ -185,3 +185,19 @@ db.students.find({
 db.students.find({
   course: { $not: { $eq: 'Node.js' } }
 })
+
+db.students.find({ grades: 95 })
+
+db.students.find({
+  grades: { $all: [90, 95] }
+})
+
+db.students.find({
+  grades: { $size: 3 }
+})
+
+db.students.find({
+  $expr: {
+    $gt: [{ $avg: "$grades" }, 85]
+}
+})
