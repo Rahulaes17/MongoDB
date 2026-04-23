@@ -201,3 +201,21 @@ db.students.find({
     $gt: [{ $avg: "$grades" }, 85]
 }
 })
+
+db.students.find().sort({ age:-1 })
+
+db.students.find().sort({ course: 1, age:-1 })
+
+db.students.find().limit(3)
+
+db.students.find().skip(2).limit(3)
+
+db.students.find({
+  course: 'MongoDB'
+}).sort({
+  grades:-1
+}).limit(3)
+
+db.students.countDocuments({ course: 'MongoDB' })
+
+db.students.countDocuments({ enrolled: true })
