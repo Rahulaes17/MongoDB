@@ -219,3 +219,48 @@ db.students.find({
 db.students.countDocuments({ course: 'MongoDB' })
 
 db.students.countDocuments({ enrolled: true })
+
+
+
+// Insert one new student
+db.students.insertOne({
+  name: "Neha",
+  age: 21,
+  course: "Node.js",
+  enrolled: true,
+  teacherId: ObjectId("507f1f77bcf86cd799439012"),
+  grades: [89, 91, 90]
+})
+
+// Find all enrolled students
+db.students.find({ enrolled: true })
+
+// Find students age greater than 20
+db.students.find({ age: { $gt: 20 } })
+
+// Update Neha's age
+db.students.updateOne(
+  { name: "Neha" },
+  { $set: { age: 22 } }
+)
+
+// Add one grade to Neha
+db.students.updateOne(
+  { name: "Neha" },
+  { $push: { grades: 95 } }
+)
+
+// Increase experience of Prof. Sharma
+db.teachers.updateOne(
+  { name: "Prof. Sharma" },
+  { $inc: { experience: 1 } }
+)
+
+// Sort students by age descending
+db.students.find().sort({ age: -1 })
+
+// Count Node.js students
+db.students.countDocuments({ course: "Node.js" })
+
+// Delete Neha
+db.students.deleteOne({ name: "Neha" })
