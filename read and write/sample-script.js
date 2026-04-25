@@ -264,3 +264,36 @@ db.students.countDocuments({ course: "Node.js" })
 
 // Delete Neha
 db.students.deleteOne({ name: "Neha" })
+
+db.students.insertOne({
+  name: "Meera",
+  age: 20,
+  course: "Express",
+  enrolled: true,
+  teacherId: ObjectId("507f1f77bcf86cd799439013"),
+  grades: [86, 89, 91]
+})
+
+db.students.find({ course: "Express" })
+
+db.students.updateOne(
+  { name: "Meera" },
+  { $push: { grades: 95 } }
+)
+
+db.students.updateOne(
+  { name: "Meera" },
+  { $set: { enrolled: false } }
+)
+
+db.students.find({
+  grades: { $size: 4 }
+})
+
+db.students.find().sort({ name: 1 })
+
+db.students.countDocuments({ enrolled: false })
+
+db.students.deleteOne({ name: "Meera" })
+
+
