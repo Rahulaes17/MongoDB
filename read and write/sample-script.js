@@ -297,3 +297,45 @@ db.students.countDocuments({ enrolled: false })
 db.students.deleteOne({ name: "Meera" })
 
 
+db.students.insertOne({
+  name: "Vikram",
+  age: 23,
+  course: "Node.js",
+  enrolled: true,
+  teacherId: ObjectId("507f1f77bcf86cd799439012"),
+  grades: [78, 84, 88]
+})
+
+db.students.updateOne(
+  { name: "Vikram" },
+  { $push: { grades: 92 } }
+)
+
+db.students.updateOne(
+  { name: "Vikram" },
+  { $inc: { age: 1 } }
+)
+
+db.students.find({
+  $expr: { $gt: [{ $avg: "$grades" }, 85] }
+})
+
+db.students.find({
+  course: { $in: ["Node.js", "MongoDB"] },
+  age: { $gte: 22 }
+}).sort({ age: -1 })
+
+db.teachers.updateOne(
+  { _id: ObjectId("507f1f77bcf86cd799439012") },
+  { $inc: { experience: 2 } }
+)
+
+db.students.countDocuments({
+  grades: { $size: 4 }
+})
+
+db.students.deleteMany({
+  $expr: { $lt: [{ $avg: "$grades" }, 80] }
+})
+
+db.students.deleteOne({ name: "Vikram" })
