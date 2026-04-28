@@ -1,44 +1,90 @@
 const express = require('express');
 const { MongoClient } = require('mongodb');
+
 const app = express();
 const port = 3000;
 
-// Connection URL
 const url = 'mongodb://localhost:27017';
-const client = new MongoClient(url);
-
-// Database Name
 const dbName = 'mySchool';
 
-let db, collection;
+let db;
+let collection;
 
-async function main() {
+app.use(express.json());
+
+async function connectDB() {
+  const client = new MongoClient(url);
+  await client.connect();
+  db = client.db(dbName);
+  collection = db.collection('students');
+  console.log('MongoDB connected');
+}
+
+app.get('/', async (req, res) => {
   try {
-    // Connect once when server starts
-    await client.connect();
-    console.log('Connected successfully to server');
-    db = client.db(dbName);
-    collection = db.collection('students');
+    const students = await collection.find().toArray();
+    res.json(students);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error fetching students' });
+  }
+});
 
-    // Define routes
-    app.get('/', async (req, res) => {
-      try {
-        const studentsData = await collection.find().toArray();
-        res.json(studentsData); // send data as JSON
-      } catch (err) {
-        console.error(err);
-        res.status(500).send('Error fetching students');
-      }
+app.post('/students', async (req, res) => {
+  try {
+    const newStudent = req.body;
+    const result = await collection.insertOne(newStudent);
+    res.status(201).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error adding student' });
+  }
+});
+
+app.put('/students/:id', async (req, res) => {
+  try {
+    const { ObjectId } = require('mongodb');
+    const id = req.params.id;
+    const updatedData = req.body;
+
+    const result = await collection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updatedData }
+    );
+
+    res.json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error updating student' });
+  }
+});
+
+app.delete('/students/:id', async (req, res) => {
+  try {
+    const { ObjectId } = require('mongodb');
+    const id = req.params.id;
+
+    const result = await collection.deleteOne({
+      _id: new ObjectId(id),
     });
 
-    // Start server
+    res.json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error deleting student' });
+  }
+});
+
+async function startServer() {
+  try {
+    await connectDB();
     app.listen(port, () => {
-      console.log(`Example app listening on port ${port}`);
+      console.log(`Server running on http://localhost:${port}`);
     });
-  } catch (err) {
-    console.error('Failed to connect to MongoDB', err);
+  } catch (error) {
+    console.error('Server startup failed', error);
     process.exit(1);
   }
 }
 
-main();
+startServer();
